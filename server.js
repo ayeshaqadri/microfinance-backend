@@ -13,7 +13,7 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: 'https://guileless-sable-d281d4.netlify.app/', // EXACT Netlify URL with https
+  origin: 'https://guileless-sable-d281d4.netlify.app', // EXACT Netlify URL with https
   credentials: true
 }));
 app.use(express.json()); // body se json data read karne ke liye
