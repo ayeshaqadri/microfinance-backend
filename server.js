@@ -13,8 +13,8 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: 'http://localhost:5173', // your frontend URL
-  credentials: true                
+  origin: 'https://guileless-sable-d281d4.netlify.app/', // EXACT Netlify URL with https
+  credentials: true
 }));
 app.use(express.json()); // body se json data read karne ke liye
 app.use("/api/auth", authRoutes);
