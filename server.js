@@ -10,11 +10,21 @@ dotenv.config();
 
 const app = express();
 
-// Middlewares
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://resonant-kulfi-c7ba93.netlify.app'
+];
+
 app.use(cors({
-  origin: "http://localhost:5173",  // Correct URL format
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy error: Not allowed by CORS'));
+    }
+  },
   credentials: true
-})); // Abhi ke liye open CORS during development
+}));
 app.use(express.json()); 
 
 // Routes
