@@ -1,36 +1,32 @@
-import express from 'express';
-import cors from 'cors';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
-import loanRoutes from "./routes/loanRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
+import { protect } from "./middlewares/authMiddleware.js";
 
-// .env file se variables lene ke liye
 dotenv.config();
 
-// Express app create
 const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: 'https://guileless-sable-d281d4.netlify.app', // EXACT Netlify URL with https
+  origin: "http://localhost:5173",  // Correct URL format
   credentials: true
-}));
-app.use(express.json()); // body se json data read karne ke liye
+})); // Abhi ke liye open CORS during development
+app.use(express.json()); 
+
+// Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/loans", loanRoutes);
+app.use("/api/tasks", protect, taskRoutes);
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('✅ MongoDB Connected'))
-.catch((err) => console.error('❌ MongoDB Connection Error:', err));
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => console.log('✅ MongoDB Connected'))
+  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 
-// Simple Route (Test ke liye)
-app.get('/', (req, res) => {
-  res.send('Ayesha ki App Backend is Running 🚀');
+app.get("/", (req, res) => {
+  res.send("Task Manager App Backend is Running 🚀");
 });
 
 // Server Listen
